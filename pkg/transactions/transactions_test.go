@@ -142,3 +142,59 @@ func TestSumByCategory(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkChanSumByCategory(b *testing.B) {
+	transactions := makeTransactions()
+	want := referenceResult()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result := ChanSumByCategory("001", transactions)
+		b.StopTimer()
+		if !reflect.DeepEqual(result, want) {
+			b.Fatalf("invalid result, got %v, want %v", result, want)
+		}
+		b.StartTimer()
+	}
+}
+
+func BenchmarkMutexSumByCategory(b *testing.B) {
+	transactions := makeTransactions()
+	want := referenceResult()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result := MutexSumByCategory("001", transactions)
+		b.StopTimer()
+		if !reflect.DeepEqual(result, want) {
+			b.Fatalf("invalid result, got %v, want %v", result, want)
+		}
+		b.StartTimer()
+	}
+}
+
+func BenchmarkMutexSumByCategoryV2(b *testing.B) {
+	transactions := makeTransactions()
+	want := referenceResult()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result := MutexSumByCategoryV2("001", transactions)
+		b.StopTimer()
+		if !reflect.DeepEqual(result, want) {
+			b.Fatalf("invalid result, got %v, want %v", result, want)
+		}
+		b.StartTimer()
+	}
+}
+
+func BenchmarkSumByCategory(b *testing.B) {
+	transactions := makeTransactions()
+	want := referenceResult()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result := SumByCategory("001", transactions)
+		b.StopTimer()
+		if !reflect.DeepEqual(result, want) {
+			b.Fatalf("invalid result, got %v, want %v", result, want)
+		}
+		b.StartTimer()
+	}
+}
